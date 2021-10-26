@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const clear = require('clear');
-const fonts = require('../fonts/fonts.json');
+const fonts = require('./fonts.json');
 let argv = require('minimist')(process.argv.slice(2));
 
 function clock(timeZone) {
