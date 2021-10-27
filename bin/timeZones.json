@@ -5,11 +5,11 @@
 "zones": {
     "EDT": {
         "name": "Eastern Daylight Time",
-        "UTCdifference": -4
+        "ToUTCdifference": -4
     },
     "EST": {
         "name": "Eastern Standard Time",
-        "UTCdifference": -5
+        "ToUTCdifference": -5
     }
 }
 }
