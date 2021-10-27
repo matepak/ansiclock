@@ -1,0 +1,15 @@
+{
+"name": "timeZones",
+"version": "0.1.0",
+
+"zones": {
+    "EDT": {
+        "name": "Eastern Daylight Time",
+        "UTCdifference": -4
+    },
+    "EST": {
+        "name": "Eastern Standard Time",
+        "UTCdifference": -5
+    }
+}
+}
