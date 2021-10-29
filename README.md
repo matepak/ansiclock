@@ -13,3 +13,6 @@ $ npm install -g
 $ cliclock
 $ cliclock -c [red|green|yellow|blue|magenta|cyan|white]
 ```
+
+
+![glider_gun_example](https://github.com/matepak/cliclock/blob/main/prompt.gif)
