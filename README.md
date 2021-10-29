@@ -11,4 +11,5 @@ $ npm install -g
 # Usage
 ```
 $ cliclock
+$ cliclock -c [red|green|yellow|blue|magenta|cyan|white]
 ```
