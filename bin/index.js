@@ -21,6 +21,8 @@ process.on('SIGINT', () => {
     process.exit();
 });
 
+process.stdout.on('resize', () => clear());
+
 
 clear();
 process.stderr.write('\x1B[?25l');
@@ -40,10 +42,13 @@ function renderClock(time) {
         }
         process.stdout.write('\n');
     }
+    process.stdout.write('\n');
+    process.stdout.write('\x1B[12C');
+    process.stdout.write(Date().slice(0, 15));
+    process.stdout.write('\n');
+    process.stdout.write('\x1B[6C');
+    process.stdout.write(Date().slice(35, 63));
     process.stdout.cursorTo(0, 0);
 };
-
-
-
 
 let clockIntervalId = setInterval(clock, 1000);
