@@ -14,6 +14,14 @@ const drawLine = (line) => {
 
     }
 }
+
+process.on('SIGINT', () => {
+    clear();
+    process.stderr.write('\x1B[?25h');
+    process.exit();
+});
+
+
 clear();
 process.stderr.write('\x1B[?25l');
 
@@ -28,7 +36,6 @@ function getTime() {
 function renderClock(time) {
     for (let j = 0; j < 5; j++) {
         for (let k = 0; k < time.length; k++) {
-            //process.stdout.clearLine(1);
             drawLine(fonts.chars[time[k]][j]);
         }
         process.stdout.write('\n');
