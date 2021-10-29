@@ -18,13 +18,24 @@ const months = [
     'Dec'
 ];
 
+const bgColor = {
+    'red': '\x1b[41m',
+    'green': '\x1b[42m',
+    'yellow': '\x1b[43m',
+    'blue': '\x1b[44m',
+    'magenta': '\x1b[45m',
+    'cyan': '\x1b[46m',
+    'white': '\x1b[47m',
+    'default': '\x1b[49m',
+};
+
 
 const drawLine = (line) => {
     for (let i = 0; i < line.length; i++) {
         if (line[i] === '0') process.stdout.write(' ');
         if (line[i] === '1') {
-            process.stdout.write('\x1b[2;37;41m ');
-            process.stdout.write('\x1b[0m');
+            process.stdout.write(bgColor[argv.c??'green'] + ' ');
+            process.stdout.write(bgColor.default);
         }
 
     }
