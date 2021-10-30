@@ -86,4 +86,5 @@ function renderClock(time) {
     process.stdout.cursorTo(0, 0);
 };
 
+clock();
 let clockIntervalId = setInterval(clock, 1000);
