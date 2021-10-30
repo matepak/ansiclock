@@ -57,7 +57,12 @@ function clock(timeZone) {
     renderClock(getTime());
 }
 function getTime() {
-    return [...Date().slice(16, 21)].map(char => char + ' ').join('');
+    let dateObj = new Date();
+    return (
+        dateObj.getHours().toString().padStart(2, 0) 
+        + ':' + 
+        dateObj.getMinutes().toString().padStart(2, 0)
+        ).split('').map(char => char + ' ').join('');
 }
 
 function getDate() {
