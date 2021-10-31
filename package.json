@@ -1,15 +1,12 @@
 {
-  "name": "cliclock",
-  "version": "1.0.0",
-  "description": "",
+  "name": "ansiclock",
+  "version": "0.1.0",
+  "description": "Terminal clock",
   "main": "bin/index.js",
   "bin": {
     "cliclock": "./bin/index.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
+  "keywords": ["ansi", "clock", "terminal",  "cli", "world clock", "time"],
   "author": "Mateusz Szczupak <mateusz.szczupak@outlook.com>",
   "license": "MIT",
   "dependencies": {
