@@ -13,6 +13,3 @@ $ npm install -g
 $ ansiclock
 $ ansicock -c [red|green|yellow|blue|magenta|cyan|white]
 ```
-
-
-![glider_gun_example](https://github.com/matepak/cliclock/blob/main/prompt.gif)
