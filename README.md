@@ -5,11 +5,15 @@ Terminal clock writed in node inspired by tty-clock by Martin Duquesnoy <xorg62@
 # Installation
 
 ```
+$ npm install ansiclock
+```
+OR
+```
 $ git clone https://github.com/matepak/ansiclock.git
 $ npm install -g
 ```
 # Usage
 ```
 $ ansiclock
-$ ansicock -c [red|green|yellow|blue|magenta|cyan|white]
+$ ansiclock -c [red|green|yellow|blue|magenta|cyan|white]
 ```
