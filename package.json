@@ -4,9 +4,16 @@
   "description": "Terminal clock",
   "main": "bin/index.js",
   "bin": {
-    "cliclock": "./bin/index.js"
+    "ansiclock": "./bin/index.js"
   },
-  "keywords": ["ansi", "clock", "terminal",  "cli", "world clock", "time"],
+  "keywords": [
+    "ansi",
+    "clock",
+    "terminal",
+    "cli",
+    "world clock",
+    "time"
+  ],
   "author": "Mateusz Szczupak <mateusz.szczupak@outlook.com>",
   "license": "MIT",
   "dependencies": {
