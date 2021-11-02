@@ -36,7 +36,7 @@ function getTerminalSize() {
   return process.stdout.getWindowSize();
 }
 
-const drawLine = (line) => {
+function drawLine(line) {
   for (let i = 0; i < line.length; i++) {
     if (line[i] === "0") process.stdout.write(" ");
     if (line[i] === "1") {
@@ -52,13 +52,12 @@ process.on("SIGINT", () => {
 });
 
 process.stdout.on("resize", () => {
-    setInMiddle();
-    clear();
-    process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
+  setInMiddle();
+  clear();
+  process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
 });
 
-clear();
-process.stderr.write("\x1B[?25l");
+
 
 function clock(timeZone) {
   renderClock(getTime());
@@ -101,9 +100,7 @@ function renderClock(time) {
   process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
 }
 
-if (argv.m) {
-  setInMiddle();
-}
+init();
 
 process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
 clock();
@@ -111,7 +108,16 @@ clock();
 let clockIntervalId = setInterval(clock, 1000);
 
 function setInMiddle() {
-    let newPosition = getTerminalSize().map((pos) => Math.floor(pos / 2));
-    drawPosition.cols = newPosition[0] - clockWidth/2;
-    drawPosition.lines = newPosition[1] - clockHeight/2;
+  let newPosition = getTerminalSize().map((pos) => Math.floor(pos / 2));
+  drawPosition.cols = newPosition[0] - clockWidth / 2;
+  drawPosition.lines = newPosition[1] - clockHeight / 2;
+}
+
+function init() {
+  if (argv.m) {
+    setInMiddle();
+  }
+clear();
+process.stderr.write("\x1B[?25l");
+
 }
