@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const process = require("process");
 const clear = require("clear");
 const fonts = require("./fonts.json");
 const argv = require("minimist")(process.argv.slice(2));
@@ -44,7 +45,7 @@ function drawLine(line) {
       process.stdout.write(bgColor.default);
     }
   }
-};
+}
 process.on("SIGINT", () => {
   clear();
   process.stderr.write("\x1B[?25h");
@@ -56,8 +57,6 @@ process.stdout.on("resize", () => {
   clear();
   process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
 });
-
-
 
 function clock(timeZone) {
   renderClock(getTime());
@@ -117,7 +116,6 @@ function init() {
   if (argv.m) {
     setInMiddle();
   }
-clear();
-process.stderr.write("\x1B[?25l");
-
+  clear();
+  process.stderr.write("\x1B[?25l");
 }
