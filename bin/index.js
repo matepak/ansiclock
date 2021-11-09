@@ -113,6 +113,11 @@ function setInMiddle() {
 }
 
 function init() {
+  if (!process.stdout.isTTY) {
+    console.log("ansii clock works only on TYY terminals");
+    process.exit();
+  }
+
   if (argv.m) {
     setInMiddle();
   }
