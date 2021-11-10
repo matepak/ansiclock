@@ -53,7 +53,6 @@ process.on("SIGINT", () => {
 });
 
 process.stdout.on("resize", () => {
-  setInMiddle();
   clear();
   process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
 });
@@ -85,7 +84,12 @@ function getDate() {
 
 function renderClock(time) {
   for (let j = 0; j < 5; j++) {
+    let currentCol = drawPosition.cols; 
     for (let k = 0; k < time.length; k++) {
+      currentCol += fonts.chars[time[k]][j].length;
+      if(currentCol > process.stdout.columns) {
+        continue;
+      }
       drawLine(fonts.chars[time[k]][j]);
     }
     process.stdout.write("\n");
