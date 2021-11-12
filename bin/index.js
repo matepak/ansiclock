@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const process = require("process");
 const clear = require("clear");
 const fonts = require("./fonts.json");
+const { stdout, stderr } = require("process");
 const argv = require("minimist")(process.argv.slice(2));
-const clockWidth = 34;
-const clockHeight = 6;
+const clockWidth = 30;
+const clockHeight = 7;
 const months = [
   "Jan",
   "Feb",
@@ -32,34 +32,34 @@ const bgColor = {
   default: "\x1b[49m",
 };
 
-let drawPosition = { cols: 0, lines: 0 };
-function getTerminalSize() {
-  return process.stdout.getWindowSize();
-}
+let date = `${getDate().day} ${getDate().month} ${getDate().year}`;
+let printCords = { cols: 0, rows: 0 };
 
-function drawLine(line) {
-  for (let i = 0; i < line.length; i++) {
-    if (line[i] === "0") process.stdout.write(" ");
-    if (line[i] === "1") {
-      process.stdout.write(bgColor[argv.c ?? "green"] + " ");
-      process.stdout.write(bgColor.default);
-    }
-  }
-}
 process.on("SIGINT", () => {
   clear();
-  process.stderr.write("\x1B[?25h");
+  stderr.write("\x1B[?25h");
   process.exit();
 });
 
-process.stdout.on("resize", () => {
+stdout.on("resize", () => {
   clear();
-  process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
+  initDrawPos();
 });
+
+function printLine(line) {
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === "0") stdout.write(" ");
+    if (line[i] === "1") {
+      stdout.write(bgColor[argv.c ?? "green"] + " ");
+      stdout.write(bgColor.default);
+    }
+  }
+}
 
 function clock(timeZone) {
   renderClock(getTime());
 }
+
 function getTime() {
   let dateObj = new Date();
   return (
@@ -74,7 +74,6 @@ function getTime() {
 
 function getDate() {
   let dateObj = new Date();
-
   return {
     day: dateObj.getDate().toString(),
     month: months[dateObj.getMonth()],
@@ -84,47 +83,56 @@ function getDate() {
 
 function renderClock(time) {
   for (let j = 0; j < 5; j++) {
-    let currentCol = drawPosition.cols; 
+    if (stdout.getWindowSize()[1] < printCords.rows + clockHeight) {
+      break;
+    }
+    let currentCollumn = printCords.cols;
     for (let k = 0; k < time.length; k++) {
-      currentCol += fonts.chars[time[k]][j].length;
-      if(currentCol > process.stdout.columns) {
+      currentCollumn += fonts.chars[time[k]][j].length;
+      if (stdout.getWindowSize()[0] < currentCollumn) {
         continue;
       }
-      drawLine(fonts.chars[time[k]][j]);
+
+      printLine(fonts.chars[time[k]][j]);
     }
-    process.stdout.write("\n");
-    process.stdout.moveCursor(drawPosition.cols, 0);
+
+    stdout.write("\n");
+    stdout.moveCursor(printCords.cols);
   }
-  process.stdout.write("\n");
-  process.stdout.write("\x1B[10C");
-  process.stdout.moveCursor(drawPosition.cols, 0);
-  process.stdout.write(`${getDate().day} ${getDate().month} ${getDate().year}`);
-  process.stdout.write("\n");
-  process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
+  if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
+    stdout.write(date);
+  debug();
+  stdout.cursorTo(printCords.cols, printCords.rows);
 }
-
-init();
-
-process.stdout.cursorTo(drawPosition.cols, drawPosition.lines);
-clock();
 
 let clockIntervalId = setInterval(clock, 1000);
 
-function setInMiddle() {
-  let newPosition = getTerminalSize().map((pos) => Math.floor(pos / 2));
-  drawPosition.cols = newPosition[0] - clockWidth / 2;
-  drawPosition.lines = newPosition[1] - clockHeight / 2;
+function debug() {
+  if (argv.d) {
+    stdout.write("\n");
+    console.log({ window_size: stdout.getWindowSize() });
+    console.log({ start_position: printCords });
+  }
 }
 
 function init() {
-  if (!process.stdout.isTTY) {
-    console.log("ansii clock works only on TYY terminals");
+  if (!stdout.isTTY) {
+    console.log("ansii clock works only on TTY terminals");
     process.exit();
   }
-
-  if (argv.m) {
-    setInMiddle();
-  }
   clear();
-  process.stderr.write("\x1B[?25l");
+  stderr.write("\x1B[?25l");
+  initDrawPos();
 }
+
+function initDrawPos() {
+  if (argv.m) {
+    let windowSize = stdout.getWindowSize();
+    printCords.cols = Math.floor(windowSize[0] / 2 - clockWidth / 2);
+    printCords.rows = Math.floor(windowSize[1] / 2 - clockHeight / 2);
+  }
+  stdout.cursorTo(printCords.cols, printCords.rows);
+}
+
+init();
+clock();
