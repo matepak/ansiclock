@@ -32,7 +32,18 @@ const bgColor = {
   default: "\x1b[49m",
 };
 
-let date = `${getDate().day} ${getDate().month} ${getDate().year}`;
+function date() {
+  function getDate() {
+    let dateObj = new Date();
+    return {
+      day: dateObj.getDate().toString(),
+      month: months[dateObj.getMonth()],
+      year: dateObj.getFullYear().toString(),
+    };
+  }
+  return`${getDate().day} ${getDate().month} ${getDate().year}`
+};
+
 let printCords = { cols: 0, rows: 0 };
 
 process.on("SIGINT", () => {
@@ -100,7 +111,7 @@ function renderClock(time) {
     stdout.moveCursor(printCords.cols);
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
-    stdout.write(date);
+    stdout.write(date());
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
