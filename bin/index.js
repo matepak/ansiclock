@@ -120,6 +120,11 @@ function init() {
     console.log("ansii clock works only on TTY terminals");
     process.exit();
   }
+
+  if(process.platform !== 'linux') {
+    console.log("ansiclock currently works only in linux")
+    process.exit();
+  }
   clear();
   stderr.write("\x1B[?25l");
   initDrawPos();
