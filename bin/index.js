@@ -6,20 +6,6 @@ const { stdout, stderr } = require("process");
 const argv = require("minimist")(process.argv.slice(2));
 const clockWidth = 30;
 const clockHeight = 7;
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 
 const bgColor = {
   red: "\x1b[41m",
@@ -32,16 +18,19 @@ const bgColor = {
   default: "\x1b[49m",
 };
 
-function date() {
-  function getDate() {
-    let dateObj = new Date();
-    return {
-      day: dateObj.getDate().toString(),
-      month: months[dateObj.getMonth()],
-      year: dateObj.getFullYear().toString(),
-    };
+const date = {
+
+  months: [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ],
+
+  day: new Date().getDate().toString(),
+  month: new Date().getMonth(),
+  year: new Date().getFullYear().toString(),
+  
+  get() {
+    return `${this.day} ${this.months[this.month]} ${this.year}`;
   }
-  return`${getDate().day} ${getDate().month} ${getDate().year}`
 };
 
 let printCords = { cols: 0, rows: 0 };
@@ -111,7 +100,7 @@ function renderClock(time) {
     stdout.moveCursor(printCords.cols);
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
-    stdout.write(date());
+    stdout.write(date.get());
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
