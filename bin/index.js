@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+"use strict";
 
+const readline = require('readline');
 const clear = require("clear");
 const fonts = require("./fonts.json");
 const { stdout, stderr } = require("process");
@@ -34,6 +36,15 @@ const date = {
 };
 
 let printCords = { cols: 0, rows: 0 };
+
+
+
+process.stdin.on('keypress', (chunk, key) => {
+  if (key && key.name === 'q') {
+  clear();
+  process.exit();
+  }
+});
 
 process.on("SIGINT", () => {
   clear();
@@ -116,15 +127,17 @@ function debug() {
 }
 
 function init() {
+  readline.emitKeypressEvents(process.stdin);
+  if (process.stdin.isTTY) process.stdin.setRawMode(true);
   if (!stdout.isTTY) {
     console.log("ansii clock works only on TTY terminals");
     process.exit();
   }
 
-  if(process.platform !== 'linux') {
-    console.log("ansiclock currently works only in linux")
-    process.exit();
-  }
+  // if (process.platform !== "linux") {
+  //   console.log("ansiclock currently works only in linux");
+  //   process.exit();
+  // }
   clear();
   stderr.write("\x1B[?25l");
   initDrawPos();
