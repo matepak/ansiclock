@@ -13,3 +13,4 @@ ansiclock
 ansiclock -m #sets clock in the middle of terminal
 ansiclock -c [red|green|yellow|blue|magenta|cyan|white]
 ```
+To quit press 'q' key
