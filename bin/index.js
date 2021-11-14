@@ -20,24 +20,25 @@ const bgColor = {
   default: "\x1b[49m",
 };
 
-const date = {
+function getDate() {
+  return new Date().toDateString();
+}
+// const date = {
 
-  months: [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ],
+//   months: [
+//     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+//   ],
 
-  day: new Date().getDate().toString(),
-  month: new Date().getMonth(),
-  year: new Date().getFullYear().toString(),
+//   day: new Date().getDate().toString(),
+//   month: new Date().getMonth(),
+//   year: new Date().getFullYear().toString(),
   
-  get() {
-    return `${this.day} ${this.months[this.month]} ${this.year}`;
-  }
-};
+//   get() {
+//     return `${this.day} ${this.months[this.month]} ${this.year}`;
+//   }
+// };
 
 let printCords = { cols: 0, rows: 0 };
-
-
 
 process.stdin.on('keypress', (chunk, key) => {
   if (key && key.name === 'q') {
@@ -83,14 +84,14 @@ function getTime() {
     .join("");
 }
 
-function getDate() {
-  let dateObj = new Date();
-  return {
-    day: dateObj.getDate().toString(),
-    month: months[dateObj.getMonth()],
-    year: dateObj.getFullYear().toString(),
-  };
-}
+// function getDate() {
+//   let dateObj = new Date();
+//   return {
+//     day: dateObj.getDate().toString(),
+//     month: months[dateObj.getMonth()],
+//     year: dateObj.getFullYear().toString(),
+//   };
+// }
 
 function renderClock(time) {
   for (let j = 0; j < 5; j++) {
@@ -111,7 +112,7 @@ function renderClock(time) {
     stdout.moveCursor(printCords.cols);
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
-    stdout.write(date.get());
+    stdout.write(getDate());
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
@@ -133,11 +134,6 @@ function init() {
     console.log("ansii clock works only on TTY terminals");
     process.exit();
   }
-
-  // if (process.platform !== "linux") {
-  //   console.log("ansiclock currently works only in linux");
-  //   process.exit();
-  // }
   clear();
   stderr.write("\x1B[?25l");
   initDrawPos();
