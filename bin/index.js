@@ -9,7 +9,7 @@ const argv = require("minimist")(process.argv.slice(2));
 const clockWidth = 30;
 const clockHeight = 7;
 
-const bgColor = {
+const ansiBgColor = {
   red: "\x1b[41m",
   green: "\x1b[42m",
   yellow: "\x1b[43m",
@@ -23,20 +23,6 @@ const bgColor = {
 function getDate() {
   return new Date().toDateString();
 }
-// const date = {
-
-//   months: [
-//     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-//   ],
-
-//   day: new Date().getDate().toString(),
-//   month: new Date().getMonth(),
-//   year: new Date().getFullYear().toString(),
-  
-//   get() {
-//     return `${this.day} ${this.months[this.month]} ${this.year}`;
-//   }
-// };
 
 let printCords = { cols: 0, rows: 0 };
 
@@ -62,8 +48,8 @@ function printLine(line) {
   for (let i = 0; i < line.length; i++) {
     if (line[i] === "0") stdout.write(" ");
     if (line[i] === "1") {
-      stdout.write(bgColor[argv.c ?? "green"] + " ");
-      stdout.write(bgColor.default);
+      stdout.write(ansiBgColor[argv.c ?? "green"] + " ");
+      stdout.write(ansiBgColor.default);
     }
   }
 }
@@ -83,15 +69,6 @@ function getTime() {
     .map((char) => char + " ")
     .join("");
 }
-
-// function getDate() {
-//   let dateObj = new Date();
-//   return {
-//     day: dateObj.getDate().toString(),
-//     month: months[dateObj.getMonth()],
-//     year: dateObj.getFullYear().toString(),
-//   };
-// }
 
 function renderClock(time) {
   for (let j = 0; j < 5; j++) {
