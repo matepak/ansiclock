@@ -1,15 +1,19 @@
 {
-"name": "timeZones",
-"version": "0.1.0",
+  "name": "timeZones",
+  "version": "0.1.0",
 
-"zones": {
-    "EDT": {
-        "name": "Eastern Daylight Time",
-        "ToUTCdifference": -4
-    },
-    "EST": {
-        "name": "Eastern Standard Time",
-        "ToUTCdifference": -5
-    }
-}
+  "GMT": {
+      "name": "Greenwich Mean Time",
+      "ToUTCdifference": 0
+  },
+
+  "EDT": {
+    "name": "Eastern Daylight Time",
+    "ToUTCdifference": -4
+  },
+
+  "EST": {
+    "name": "Eastern Standard Time",
+    "ToUTCdifference": -5
+  }
 }

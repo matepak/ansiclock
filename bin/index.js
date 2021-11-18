@@ -4,8 +4,10 @@
 const readline = require('readline');
 const clear = require("clear");
 const fonts = require("./fonts.json");
+const dt = require("./datetime.js");
 const { stdout, stderr } = require("process");
 const argv = require("minimist")(process.argv.slice(2));
+const TimeZones = require("./timeZones.json");
 const clockWidth = 30;
 const clockHeight = 7;
 
@@ -19,11 +21,7 @@ const ansiBgColor = {
   white: "\x1b[47m",
   default: "\x1b[49m",
 };
-
-function getDate() {
-  return new Date().toDateString();
-}
-
+let dateTime = undefined;
 let printCords = { cols: 0, rows: 0 };
 
 process.stdin.on('keypress', (chunk, key) => {
@@ -54,20 +52,8 @@ function printLine(line) {
   }
 }
 
-function clock(timeZone) {
-  renderClock(getTime());
-}
-
-function getTime() {
-  let dateObj = new Date();
-  return (
-    dateObj.getHours().toString().padStart(2, 0) +
-    ":" +
-    dateObj.getMinutes().toString().padStart(2, 0)
-  )
-    .split("")
-    .map((char) => char + " ")
-    .join("");
+function clock() {
+  renderClock(dateTime.getTime());
 }
 
 function renderClock(time) {
@@ -89,7 +75,7 @@ function renderClock(time) {
     stdout.moveCursor(printCords.cols);
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
-    stdout.write(getDate());
+    stdout.write(dateTime.getDate());
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
@@ -105,6 +91,7 @@ function debug() {
 }
 
 function init() {
+  dateTime = dt.createDateTime(argv.t);
   readline.emitKeypressEvents(process.stdin);
   if (process.stdin.isTTY) process.stdin.setRawMode(true);
   if (!stdout.isTTY) {
