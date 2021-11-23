@@ -3,24 +3,14 @@
 
 const readline = require('readline');
 const clear = require("clear");
-const fonts = require("./fonts.json");
-const dt = require("./datetime.js");
 const { stdout, stderr } = require("process");
 const argv = require("minimist")(process.argv.slice(2));
-const TimeZones = require("./timeZones.json");
+const dt = require("./datetime.js");
+const fonts = require("./fonts.json");
+const {backgroundColor, privateModes} = require("./ansi_esc_codes");
 const clockWidth = 30;
 const clockHeight = 7;
 
-const ansiBgColor = {
-  red: "\x1b[41m",
-  green: "\x1b[42m",
-  yellow: "\x1b[43m",
-  blue: "\x1b[44m",
-  magenta: "\x1b[45m",
-  cyan: "\x1b[46m",
-  white: "\x1b[47m",
-  default: "\x1b[49m",
-};
 let dateTime = undefined;
 let printCords = { cols: 0, rows: 0 };
 
@@ -33,7 +23,7 @@ process.stdin.on('keypress', (chunk, key) => {
 
 process.on("SIGINT", () => {
   clear();
-  stderr.write("\x1B[?25h");
+  stderr.write(privateModes.makeCursorInivisible);
   process.exit();
 });
 
@@ -46,8 +36,8 @@ function printLine(line) {
   for (let i = 0; i < line.length; i++) {
     if (line[i] === "0") stdout.write(" ");
     if (line[i] === "1") {
-      stdout.write(ansiBgColor[argv.c ?? "green"] + " ");
-      stdout.write(ansiBgColor.default);
+      stdout.write(backgroundColor[argv.c ?? "green"] + " ");
+      stdout.write(backgroundColor.default);
     }
   }
 }
@@ -99,7 +89,7 @@ function init() {
     process.exit();
   }
   clear();
-  stderr.write("\x1B[?25l");
+  stderr.write(privateModes.makeCursorInivsible);
   initDrawPos();
 }
 
