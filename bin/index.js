@@ -17,6 +17,7 @@ let printCords = { cols: 0, rows: 0 };
 process.stdin.on('keypress', (chunk, key) => {
   if (key && key.name === 'q') {
   clear();
+  stderr.write(privateModes.makeCursorVisible);
   process.exit();
   }
 });
