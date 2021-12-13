@@ -1,24 +1,25 @@
 #!/usr/bin/env node
 "use strict";
 
-const readline = require('readline');
+const readline = require("readline");
 const clear = require("clear");
-const { stdout, stderr } = require("process");
+const { stdout, stderr, mainModule, off } = require("process");
 const argv = require("minimist")(process.argv.slice(2));
 const dt = require("./datetime.js");
+const cityTime = require("./getCityTimeOffset.js");
 const fonts = require("./fonts.json");
-const {backgroundColor, privateModes} = require("./ansi_esc_codes");
+const { backgroundColor, privateModes } = require("./ansi_esc_codes");
 const clockWidth = 30;
 const clockHeight = 7;
 
 let dateTime = undefined;
 let printCords = { cols: 0, rows: 0 };
 
-process.stdin.on('keypress', (chunk, key) => {
-  if (key && key.name === 'q') {
-  clear();
-  stderr.write(privateModes.makeCursorVisible);
-  process.exit();
+process.stdin.on("keypress", (chunk, key) => {
+  if (key && key.name === "q") {
+    clear();
+    stderr.write(privateModes.makeCursorVisible);
+    process.exit();
   }
 });
 
@@ -71,8 +72,6 @@ function renderClock(time) {
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
 
-let clockIntervalId = setInterval(clock, 1000);
-
 function debug() {
   if (argv.d) {
     stdout.write("\n");
@@ -82,7 +81,6 @@ function debug() {
 }
 
 function init() {
-  dateTime = dt.createDateTime(argv.t);
   readline.emitKeypressEvents(process.stdin);
   if (process.stdin.isTTY) process.stdin.setRawMode(true);
   if (!stdout.isTTY) {
@@ -92,6 +90,18 @@ function init() {
   clear();
   stderr.write(privateModes.makeCursorInivsible);
   initDrawPos();
+
+  if (argv.t) {
+    cityTime(argv.t, (offset) => {
+      dateTime = dt.createDateTime(offset);
+      clock();
+      setInterval(clock, 1000);
+    });
+  } else {
+    dateTime = dt.createDateTime();
+    clock();
+    setInterval(clock, 1000);
+  }
 }
 
 function initDrawPos() {
@@ -102,6 +112,6 @@ function initDrawPos() {
   }
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
-
-init();
-clock();
+(async function main() {
+  init();
+})();

@@ -9,8 +9,14 @@ npm install -g
 ```
 # Usage
 ```bash
-ansiclock
+ansiclock #displays local time
+ansiclock -t [city] #sets time zone for given city
 ansiclock -m #sets clock in the middle of terminal
-ansiclock -c [red|green|yellow|blue|magenta|cyan|white]
+ansiclock -c [red|green|yellow|blue|magenta|cyan|white] #sets clock colour
+```
+
+eg.  
+```bash
+ansiclock -t Sydney -c red -m
 ```
 To quit press 'q' key
