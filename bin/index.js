@@ -13,7 +13,9 @@ const clockWidth = 30;
 const clockHeight = 7;
 
 let dateTime = undefined;
+let timeZone = "Local time";
 let printCords = { cols: 0, rows: 0 };
+
 
 process.stdin.on("keypress", (chunk, key) => {
   if (key && key.name === "q") {
@@ -68,6 +70,7 @@ function renderClock(time) {
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
     stdout.write(dateTime.getDate());
+    stdout.write(` in ${timeZone}`);
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
@@ -92,6 +95,7 @@ function init() {
   initDrawPos();
 
   if (argv.t) {
+    timeZone = argv.t;
     cityTime(argv.t, (offset) => {
       dateTime = dt.createDateTime(offset);
       clock();
