@@ -2,16 +2,12 @@ function getLocalTimeOffset() {
   return new Date().getTimezoneOffset() * 60 * -1;
 }
 
-function getDate() {
-  return new Date().toDateString();
+function getDate(offset) {
+  let dateObj = new Date(new Date().getTime() + offset);
+  return dateObj.toDateString();
 }
 
 function getTime(offset) {
-  if (offset === undefined) {
-    offset = getLocalTimeOffset() * 1000;
-  } else {
-    offset *= 1000;
-  }
 
   let dateObj = new Date(new Date().getTime() + offset);
   return (
@@ -25,12 +21,17 @@ function getTime(offset) {
 }
 
 module.exports.createDateTime = function (offset) {
+  if (offset === undefined) {
+    offset = getLocalTimeOffset() * 1000;
+  } else {
+    offset *= 1000;
+  }
   return {
     getTime: function () {
       return getTime(offset);
     },
     getDate: function () {
-      return getDate();
+      return getDate(offset);
     },
   };
 };
