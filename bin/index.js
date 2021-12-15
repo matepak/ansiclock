@@ -97,6 +97,7 @@ function init() {
   if (argv.t) {
     timeZone = argv.t;
     cityTime(argv.t, (offset) => {
+      if (offset > 0) offset *= 1000;
       dateTime = dt.createDateTime(offset);
       clock();
       setInterval(clock, 1000);
