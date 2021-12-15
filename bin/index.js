@@ -70,7 +70,7 @@ function renderClock(time) {
   }
   if (stdout.getWindowSize()[1] >= printCords.rows + clockHeight)
     stdout.write(dateTime.getDate());
-    stdout.write(` in ${timeZone}`);
+    stdout.write(` ${timeZone}`);
   debug();
   stdout.cursorTo(printCords.cols, printCords.rows);
 }
