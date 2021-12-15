@@ -7,9 +7,12 @@ function getDate() {
 }
 
 function getTime(offset) {
-  if (!offset && offset !== 0) {
+  if (offset === undefined) {
     offset = getLocalTimeOffset() * 1000;
+  } else {
+    offset *= 1000;
   }
+
   let dateObj = new Date(new Date().getTime() + offset);
   return (
     dateObj.getUTCHours().toString().padStart(2, 0) +
@@ -18,7 +21,7 @@ function getTime(offset) {
   )
     .split("")
     .map((char) => char + " ")
-    .join("");q
+    .join("");
 }
 
 module.exports.createDateTime = function (offset) {
