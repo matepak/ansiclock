@@ -20,4 +20,4 @@ eg.
 ansiclock -t Sydney -c red -m
 ```
 To quit press 'q' key
-![ansiclock preview screenshot](./ansiclock.jpg "ansiclock preview")
+![ansiclock preview screenshot](./ansiclock.png "ansiclock preview")
